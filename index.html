@@ -8,6 +8,7 @@
   <title>The Book of Mormon Timeline</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <script src="./d3.js"></script>
+  <script src="./d3-transform.js"></script>
   <script src="./lodash.js"></script>
   <script src="./simpleData.js"></script>
 
@@ -57,6 +58,8 @@
         .duration(1000)
         .ease(d3.easeBack);
 
+
+
       const col = function (x) {
         return 200 + circleRadius + (x * circleDiameter * 2);
       }
@@ -70,6 +73,17 @@
         return location.index;
       }
 
+      const t1 = d3.transform()
+        .translate(function (d) { return [col(d.x), row(d.y)] })
+        .scale(1);
+
+      const t0 = d3.transform()
+        .translate(function (d) { return [col(d.x), row(d.y)] })
+        .scale(0);
+
+      const  callT1 = a=>a.transition(t).attr('transform', t1);
+      
+      
       const location_text = svg
         .selectAll('.location_text')
         .data(showLocations, d => d.location)
@@ -80,8 +94,8 @@
             .text(d => d.location)
             .attr("x", 15)
             .attr("y", (d) => row(d.location)),
-          update=>update.call(
-            update=>update.transition(t).attr("y", (d) => row(d.location))
+          update => update.call(
+            update => update.transition(t).attr("y", (d) => row(d.location))
           )
         )
 
@@ -95,8 +109,6 @@
             .attr('font-size', '2rem')
             .attr('x', 100)
             .attr('y', 100),
-          update => update,
-          exit => exit,
         )
         .text(d => d.name)
 
@@ -108,18 +120,13 @@
         .join(
           enter => enter
             .append('g')
-            .attr('transform', d => `translate(${col(d.x)} ${row(d.y)}) scale(0 0)`)
-            .call(enter => enter
-              .transition(t)
-              .attr('transform', d => `translate(${col(d.x)} ${row(d.y)}) scale(1 1)`)
-            ),
+            .attr('transform', t0)
+            .call(callT1),
+
           update => update
-            .transition(t)
-            .attr('transform', d => `translate(${col(d.x)} ${row(d.y)})`),
+            .call(callT1),
           exit => exit
-            .call(exit => exit
-              .transition(t)
-              .attr('transform', d => `translate(${col(d.x)} ${row(d.y)}) scale(0 0)`)
+            .call(exit=>exit.transition(t).attr('transform', t0)
               .remove())
         )
 
@@ -131,9 +138,7 @@
             .append('circle')
             .attr('r', d => d.radius * circleRadius)
             .style('fill', d => d.color),
-          update => update
-            .transition(t)
-            .style('fill', d => d.color),
+          update => update,
           exit => exit
             .transition(t)
             .attr('transform', 'scale(0 0)')
