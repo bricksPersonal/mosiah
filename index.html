@@ -5,9 +5,12 @@
 <head>
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>D3 Starter</title>
+  <title>The Book of Mormon Timeline</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.min.js"></script>
+  <script src="./d3.js"></script>
+  <script src="./lodash.js"></script>
+  <script src="./simpleData.js"></script>
+
 </head>
 
 <body>
@@ -19,302 +22,31 @@
     <svg width="1000" height="1000" id="mySVG"></svg>
   </div>
   <script>
-    //const data = [1, 1, 1]; // We want to visualize this as 3 circles
-    const ZARAHEMLA_Y = 3;
-    const WILDERNES_Y = 2;
-    const LAND_of_NEPHI_Y = 1;
-    const LAND_OF_FIRST_INHERITANCE_Y = 0;
-    const labels = ["Jerusalem", "Jerusalem_Wilderness", "Bountiful", "Crossing the Sea", "Land of First Inheritance", "Land of Nephi", "Wilderness", "Zarahemla"]
 
-    const data = [
-      {
-        id: 0,
-        color: "purple",
-        name: "Lehi's Family",
-        y: labels.indexOf("Jerusalem"),
-        t: 0,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "purple",
-        name: "Lehi's Family",
-        y: labels.indexOf("Jerusalem_Wilderness"),
-        t: 1,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "purple",
-        name: "Lehi's Family",
-        y: labels.indexOf("Bountiful"),
-        t: 2,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "purple",
-        name: "Lehi's Family",
-        y: labels.indexOf("Crossing the Sea"),
-        t: 3,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "purple",
-        name: "Lehi's Family",
-        y: labels.indexOf("Land of First Inheritance"),
-        t: 4,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "blue",
-        name: "Nephites",
-        y: labels.indexOf("Land of Nephi"),
-        t: 5,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 1,
-        color: "red",
-        name: "Lamanites",
-        y: labels.indexOf("Land of First Inheritance"),
-        t: 5,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "blue",
-        name: "Nephites",
-        y: labels.indexOf("Wilderness"),
-        t: 6,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 1,
-        color: "red",
-        name: "Lamanites",
-        y: labels.indexOf("Land of First Inheritance"),
-        t: 6,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "blue",
-        name: "Nephites",
-        y: labels.indexOf("Zarahemla"),
-        t: 7,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 1,
-        color: "red",
-        name: "Lamanites",
-        y: labels.indexOf("Land of Nephi"),
-        t: 7,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 0,
-        color: "blue",
-        name: "Nephites",
-        y: labels.indexOf("Zarahemla"),
-        t: 8,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 1,
-        color: "red",
-        name: "Lamanites",
-        y: labels.indexOf("Land of Nephi"),
-        t: 8,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 2,
-        color: "yellow",
-        name: "Zeniff",
-        y: labels.indexOf("Land of Nephi"),
-        t: 8,
-        x: 1,
-        radius: .5
-      },
-      {
-        id: 0,
-        color: "blue",
-        name: "Nephites",
-        y: labels.indexOf("Zarahemla"),
-        t: 9,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 1,
-        color: "red",
-        name: "Lamanites",
-        y: labels.indexOf("Land of Nephi"),
-        t: 9,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 2,
-        color: "yellow",
-        name: "Zeniff",
-        y: labels.indexOf("Land of Nephi"),
-        t: 9,
-        x: 1,
-        radius: .5
-      },
-      {
-        id: 3,
-        color: "orange",
-        name: "Alma's People",
-        y: labels.indexOf("Wilderness"),
-        t: 9,
-        x: 2,
-        radius: .5
-      },
-      {
-        id: 0,
-        color: "blue",
-        name: "Nephites",
-        y: labels.indexOf("Zarahemla"),
-        t: 10,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 1,
-        color: "red",
-        name: "Lamanites",
-        y: labels.indexOf("Land of Nephi"),
-        t: 10,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 2,
-        color: "yellow",
-        name: "Zeniff",
-        y: labels.indexOf("Zarahemla"),
-        t: 10,
-        x: 1,
-        radius: .5
-      },
-      {
-        id: 3,
-        color: "orange",
-        name: "Alma's People",
-        y: labels.indexOf("Wilderness"),
-        t: 10,
-        x: 2,
-        radius: .5
-      },
-      {
-        id: 0,
-        color: "blue",
-        name: "Nephites",
-        y: labels.indexOf("Zarahemla"),
-        t: 11,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 1,
-        color: "red",
-        name: "Lamanites",
-        y: labels.indexOf("Land of Nephi"),
-        t: 11,
-        x: 0,
-        radius: 1
-      },
-      {
-        id: 2,
-        color: "yellow",
-        name: "Zeniff",
-        y: labels.indexOf("Zarahemla"),
-        t: 11,
-        x: 1,
-        radius: .5
-      },
-      {
-        id: 3,
-        color: "orange",
-        name: "Alma's People",
-        y: labels.indexOf("Zarahemla"),
-        t: 11,
-        x: 2,
-        radius: .5
-      },
-      
-    ]
+    // import simpleData from "./simpleData.js"
+    const phaseOut = 5;
 
-    const time = [
-      {
-        t: 0,
-        name: "Lehi's Vision"
-      },
-      {
-        t: 1,
-        name: "Lehi Leaves"
-      },
-      {
-        t: 2,
-        name: "Arrival at Sea Shore"
-      },
-      {
-        t: 3,
-        name: "Crossing the Ocean"
-      },
-      {
-        t: 4,
-        name: "In the Promised Land"
-      },
-      {
-        t: 5,
-        name: "Lehi Dies"
-      },
-      {
-        t: 6,
-        name: "Mosiah I Flees"
-      },
-      {
-        t: 7,
-        name: "Mosiah I Finds Muelekites"
-      },
-      {
-        t: 8,
-        name: "Zenif Returns to Land of Nephi"
-      },
-      {
-        t: 9,
-        name: "Alma the Elder's People Flee"
-      },
-      {
-        t: 10,
-        name: "Limhi's People Escape"
-      },
-      {
-        t: 11,
-        name: "Alma's People Escape"
-      },
-    ]
+
+    const colors = ["purple", "red", "blue", "green", "cyan", "magenta", "yellow"];
+    const labels = _(simpleData.map(i => i.people.map(j => j.where))).flatten().uniq().value();
+    const time = simpleData.map((v, i) => { return { t: i, name: v.event }; });
+
+    const data = _.flatten(simpleData.map((e, i) => e.people.map(p => {
+      let person = people.find(i => i.name == p.who)
+      return {
+        id: people.indexOf(person),
+        color: person.color,
+        name: p.who,
+        y: p.where,
+        t: i,
+        x: person.column,
+        radius: person.radius,
+      };
+    })));
+
+
     let showTime = [];
+    let showLocations = [];
     let t = 0;
     const circleRadius = 40;
     const circleDiameter = circleRadius * 2;
@@ -325,16 +57,32 @@
         .duration(1000)
         .ease(d3.easeBack);
 
+      const col = function (x) {
+        return 200 + circleRadius + (x * circleDiameter * 2);
+      }
+
+      const row = function (y) {
+        return circleRadius + get_index(y) * circleDiameter + 100;
+      }
+
+      const get_index = function (where) {
+        let location = showLocations.find(i => i.location == where);
+        return location.index;
+      }
+
       const location_text = svg
-        .selectAll('location_text')
-        .data(labels, d => d)
+        .selectAll('.location_text')
+        .data(showLocations, d => d.location)
         .join(
           enter => enter
             .append('text')
             .classed('location_text', true)
-            .text(d => d)
+            .text(d => d.location)
             .attr("x", 15)
-            .attr("y", (d, i) => circleRadius + i * circleDiameter + 100)
+            .attr("y", (d) => row(d.location)),
+          update=>update.call(
+            update=>update.transition(t).attr("y", (d) => row(d.location))
+          )
         )
 
       const main_text = svg
@@ -344,7 +92,7 @@
           enter => enter
             .append('text')
             .classed('main_text', true)
-            .attr('font-size', '3rem')
+            .attr('font-size', '2rem')
             .attr('x', 100)
             .attr('y', 100),
           update => update,
@@ -360,10 +108,19 @@
         .join(
           enter => enter
             .append('g')
-            .attr('transform', d => `translate(${200 + circleRadius + (d.x * circleDiameter)} ${circleRadius + d.y * circleDiameter + 100})`),
+            .attr('transform', d => `translate(${col(d.x)} ${row(d.y)}) scale(0 0)`)
+            .call(enter => enter
+              .transition(t)
+              .attr('transform', d => `translate(${col(d.x)} ${row(d.y)}) scale(1 1)`)
+            ),
           update => update
             .transition(t)
-            .attr('transform', d => `translate(${200 + circleRadius + (d.x * circleDiameter)} ${circleRadius + d.y * circleDiameter + 100})`)
+            .attr('transform', d => `translate(${col(d.x)} ${row(d.y)})`),
+          exit => exit
+            .call(exit => exit
+              .transition(t)
+              .attr('transform', d => `translate(${col(d.x)} ${row(d.y)}) scale(0 0)`)
+              .remove())
         )
 
       const circle = g
@@ -376,20 +133,14 @@
             .style('fill', d => d.color),
           update => update
             .transition(t)
-            .style('fill', d => d.color)
+            .style('fill', d => d.color),
+          exit => exit
+            .transition(t)
+            .attr('transform', 'scale(0 0)')
+            .remove()
         )
 
-      const text_g = g
-        .selectAll('.text_g')
-        .data(d => [d], d => d.id)
-        .join(
-          enter => enter
-            .append('g')
-            .classed('text_g', true)
-            .attr('transform', 'translate(0, 10)')
-        )
-
-      const names_shadow = text_g
+      const names_shadow = g
         .selectAll('.people_shadow')
         .data(d => [d], d => d.id)
         .join(
@@ -403,7 +154,7 @@
             .attr('transform', 'translate(-1, -1)')
         )
 
-      const names = text_g
+      const names = g
         .selectAll('.people')
         .data(d => [d], d => d.id)
         .join(
@@ -415,44 +166,6 @@
             .style('font-size', fontSize)
             .style('text-anchor', "middle")
         )
-
-
-      // const circle = svg
-      //   .selectAll('circle')
-      //   .data(data, d => d.id)
-      //   .join(
-      //     enter => enter
-      //       .append('circle')
-      //       .attr('r', circleRadius / 2).call(enter => enter
-      //         .transition(t)
-      //         .attr('r', circleRadius))
-      //       .attr('cx', (d, i) => 100 + circleRadius + (d.x * circleDiameter))
-      //       .attr('cy', d => circleRadius + d.y * circleDiameter),
-      //     update => update
-      //       .transition(t).attr('cy', d => circleRadius + d.y * circleDiameter)
-      //       .attr('cx', (d, i) => 100 + circleRadius + (d.x * circleDiameter)),
-      //     exit => exit
-      //       .call(exit => exit.transition(t).style("opacity", "0").remove())
-      //   )
-      //   .style('fill', d => d.color)
-
-      // const happy = svg
-      //   .selectAll('.people')
-      //   .data(data, d => d.id)
-      //   .join(
-      //     enter => enter
-      //       .append('text')
-      //       .classed('people', true)
-      //       .attr('x', (d, i) => 100 + circleRadius + (d.x * circleDiameter))
-      //       .attr('y', d => circleRadius + d.y * circleDiameter)
-      //       .text(d => d.name)
-      //       .attr('font-size', '2rem'),
-      //     update => update
-      //       .transition(t).attr('cy', d => circleRadius + d.y * circleDiameter)
-      //       .attr('cx', (d, i) => 100 + circleRadius + (d.x * circleDiameter)),
-      //     exit => exit
-
-      //   ).attr('font-size', '2rem')
 
     };
 
@@ -476,6 +189,7 @@
     function prep(data) {
       let toShow = data.filter(i => i.t == t);
       showTime = time.filter(i => i.t == t)
+      showLocations = labels.filter(i => data.filter(k => k.t >= t - phaseOut && k.t < t + phaseOut).some(j => j.y == i)).map((l, i) => { return { location: l, index: i } });
       plot(toShow, svg);
     }
   </script>
